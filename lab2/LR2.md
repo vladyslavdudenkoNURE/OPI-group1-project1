@@ -1,59 +1,54 @@
-### Крок 3. Діаграма прецедентів (Use Case Diagram)
+# Лабораторна робота №2
+**Тема:** Моделювання програмної системи засобами UML (Unified Modeling Language)
+**Проєкт:** Веб-додаток Style You
 
+---
+
+## Крок 1-2. Функціональні вимоги (Functional Requirements)
+На основі специфікації вимог (SRS) визначено наступні ключові функції системи:
+
+* **FR-01 [Must]:** Система повинна дозволяти користувачу зареєструватися та авторизуватися.
+* **FR-02 [Must]:** Система повинна аналізувати тип фігури користувача на основі завантаженого фото та біометричних даних.
+* **FR-03 [Must]:** Система повинна генерувати 4-5 повноцінних варіантів образів під обрану користувачем подію.
+* **FR-04 [Must]:** Система повинна забезпечувати функцію віртуальної примірки (Virtual Try-On), генеруючи зображення користувача в обраному одязі.
+* **FR-05 [Must]:** Система повинна мати особистий кабінет (Profile) для управління даними та збереження історії згенерованих образів.
+
+---
+
+## Крок 3. Діаграма прецедентів (Use Case Diagram)
 ![Діаграма прецедентів](usecasediagram.png)
 
+---
+
+## Крок 4. Діаграма класів (Class Diagram)
+![Діаграма класів](classdiagram.png)
+
+---
+
+## Крок 5. Діаграма послідовності (Sequence Diagram)
+**Ключовий сценарій:** Віртуальна примірка та генерація образів (реалізація вимог FR-03, FR-04).
+
 ```mermaid
-    sequenceDiagram
+sequenceDiagram
     actor U as Зареєстрований користувач
     participant S as :System (Style You)
     participant AI as :AI Model (Computer Vision)
     participant DB as :Database
 
     U->>S: Вибирає подію та натискає "Згенерувати образи"
-    S->>DB: Отримує завантажене фото та BodyProfile
+    S->>DB: Запитує завантажене фото та BodyProfile
     DB-->>S: photoData, bodyShape
     S->>AI: requestGenerateLooks(bodyShape, eventType)
     
-    Note over AI: ШІ генерує 4-5 варіантів
+    Note over AI: ШІ генерує 4-5 варіантів одягу
     AI-->>S: List~Outfit~
     S-->>U: Відображає варіанти одягу
     
     U->>S: Натискає "Приміряти (Try-On)" на обраному луці
     S->>AI: requestVirtualTryOn(photoData, selectedOutfit)
     
-    Note over AI: ШІ рендерить одяг на фото (очікування до 30с)
+    Note over AI: ШІ рендерить одяг на фото (до 30 сек)
     AI-->>S: resultImageUrl
     
     S->>DB: saveSessionHistory(resultImageUrl)
-    S-->>U: Відображає готовий результат
-```
-
-**Код PlantUML:**
-```text
-@startuml
-left to right direction
-actor "Незареєстрований\nкористувач" as Guest
-actor "Зареєстрований\nкористувач" as User
-actor "Адміністратор" as Admin
-
-rectangle "Веб-додаток Style You" {
-  usecase "Реєстрація/Авторизація" as UC01
-  usecase "Завантаження фото" as UC02
-  usecase "Аналіз типу фігури" as UC03
-  usecase "Генерація образів (4-5 шт)" as UC04
-  usecase "Віртуальна примірка (Try-On)" as UC05
-  usecase "Збереження в історію" as UC06
-  usecase "Управління користувачами" as UC07
-}
-
-Guest --> UC01
-User --> UC02
-User --> UC04
-User --> UC05
-User --> UC06
-Admin --> UC07
-
-UC02 ..> UC03 : <<include>>
-UC04 ..> UC03 : <<extend>>
-UC05 ..> UC01 : <<include>>
-@enduml
+    S-->>U: Відображає готовий результат примірки
