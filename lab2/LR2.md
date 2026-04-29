@@ -52,3 +52,11 @@ sequenceDiagram
     
     S->>DB: saveSessionHistory(resultImageUrl)
     S-->>U: Відображає готовий результат примірки
+```
+| Вимога | Use Case | Класи | Sequence (Діаграма послідовності) | Виконавець |
+| :--- | :--- | :--- | :--- | :--- |
+| **FR-01** | UC01 (Реєстрація) | User | — | Дуденко В. |
+| **FR-02** | UC02, UC03 | Photo, BodyProfile | — | Волошко / Леонов |
+| **FR-03** | UC04 (Генерація) | Outfit, BodyProfile, AI | SD-01 (фрагмент генерації) | Дуденко В. |
+| **FR-04** | UC05 (Try-On) | TryOnSession, Outfit, Photo| SD-01 (Віртуальна примірка) | Дуденко В. |
+| **FR-05** | UC06 (Історія) | User, Outfit, TryOnSession | SD-01 (фрагмент збереження) | Волошко / Леонов |
