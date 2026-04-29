@@ -2,6 +2,32 @@
 
 ![Діаграма прецедентів](usecasediagram.png)
 
+```mermaid
+    sequenceDiagram
+    actor U as Зареєстрований користувач
+    participant S as :System (Style You)
+    participant AI as :AI Model (Computer Vision)
+    participant DB as :Database
+
+    U->>S: Вибирає подію та натискає "Згенерувати образи"
+    S->>DB: Отримує завантажене фото та BodyProfile
+    DB-->>S: photoData, bodyShape
+    S->>AI: requestGenerateLooks(bodyShape, eventType)
+    
+    Note over AI: ШІ генерує 4-5 варіантів
+    AI-->>S: List~Outfit~
+    S-->>U: Відображає варіанти одягу
+    
+    U->>S: Натискає "Приміряти (Try-On)" на обраному луці
+    S->>AI: requestVirtualTryOn(photoData, selectedOutfit)
+    
+    Note over AI: ШІ рендерить одяг на фото (очікування до 30с)
+    AI-->>S: resultImageUrl
+    
+    S->>DB: saveSessionHistory(resultImageUrl)
+    S-->>U: Відображає готовий результат
+```
+
 **Код PlantUML:**
 ```text
 @startuml
@@ -31,27 +57,3 @@ UC02 ..> UC03 : <<include>>
 UC04 ..> UC03 : <<extend>>
 UC05 ..> UC01 : <<include>>
 @enduml
-
-```mermaid sequenceDiagram
-    actor U as Зареєстрований користувач
-    participant S as :System (Style You)
-    participant AI as :AI Model (Computer Vision)
-    participant DB as :Database
-
-    U->>S: Вибирає подію та натискає "Згенерувати образи"
-    S->>DB: Отримує завантажене фото та BodyProfile
-    DB-->>S: photoData, bodyShape
-    S->>AI: requestGenerateLooks(bodyShape, eventType)
-    
-    Note over AI: ШІ генерує 4-5 варіантів
-    AI-->>S: List~Outfit~
-    S-->>U: Відображає варіанти одягу
-    
-    U->>S: Натискає "Приміряти (Try-On)" на обраному луці
-    S->>AI: requestVirtualTryOn(photoData, selectedOutfit)
-    
-    Note over AI: ШІ рендерить одяг на фото (очікування до 30с)
-    AI-->>S: resultImageUrl
-    
-    S->>DB: saveSessionHistory(resultImageUrl)
-    S-->>U: Відображає готовий результат```
