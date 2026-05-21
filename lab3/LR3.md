@@ -199,7 +199,7 @@ namespace OPI_Lb3.Tests
 ---
 
 ## 5. Посилання на Git-репозиторій
-[Посилання на репозиторій з кодом модуля та тестами](https://github.com/vladyslavdudenkoNURE)]
+[Посилання на репозиторій з кодом модуля та тестами](https://github.com/vladyslavdudenkoNURE)
 
 ---
 
